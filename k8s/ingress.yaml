@@ -1,0 +1,34 @@
+apiVersion: networking.k8s.io/v1  # Versão da API de rede
+kind: Ingress                      # Tipo: Gateway HTTP/HTTPS
+metadata:
+  name: k8slab-ingress             # Nome do Ingress
+  namespace: k8slab                # Namespace
+  annotations:                     # ← CONFIGURAÇÕES DO NGINX
+    nginx.ingress.kubernetes.io/rewrite-target: /           # Reescreve URLs
+    nginx.ingress.kubernetes.io/cors-allow-origin: "*"      # CORS: qualquer origem
+    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PUT, DELETE, OPTIONS"  # Métodos HTTP
+    nginx.ingress.kubernetes.io/cors-allow-headers: "Content-Type, Authorization"      # Headers permitidos
+spec:
+  ingressClassName: nginx          # ← USA NGINX INGRESS CONTROLLER
+  rules:                           # ← REGRAS DE ROTEAMENTO
+  - host: k8slab.local             # ← DOMÍNIO (adicionar no /etc/hosts: 127.0.0.1 k8slab.local)
+    http:
+      paths:                       # ← ROTAS
+      - path: /api                 # ← ROTA DA API
+        pathType: Prefix           # Qualquer coisa que comece com /api
+        backend:
+          service:
+            name: backend-service  # ← DIRECIONA PARA BACKEND SERVICE
+            port:
+              number: 8080         # Porta do service
+      - path: /                    # ← ROTA DO FRONTEND
+        pathType: Prefix           # Qualquer outra coisa
+        backend:
+          service:
+            name: frontend-service # ← DIRECIONA PARA FRONTEND SERVICE
+            port:
+              number: 80           # Porta do service
+---
+# Função: "Portão de entrada" do cluster - roteia tráfego externo
+# Analogia: Recepção do shopping que direciona para lojas certas
+# Benefícios: Um ponto de entrada, roteamento por URL, SSL/TLS

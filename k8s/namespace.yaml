@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: k8slab
+  labels:
+    app: k8slab-todo
+---
+# Função: Cria um "ambiente isolado" para nossa aplicação
+# Analogia: Como ter um "condomínio" só para nossos containers
+# Benefício: Organização e isolamento de recursos

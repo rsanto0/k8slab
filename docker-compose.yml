@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    container_name: k8slab-backend
+    ports:
+      - "8080:8080"
+    networks:
+      - k8slab-network
+
+  frontend:
+    build: ./frontend
+    container_name: k8slab-frontend
+    ports:
+      - "3000:80"
+    networks:
+      - k8slab-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: k8slab-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx-gateway.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - k8slab-network
+
+networks:
+  k8slab-network:
+    driver: bridge
