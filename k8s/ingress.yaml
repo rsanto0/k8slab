@@ -4,7 +4,6 @@ metadata:
   name: k8slab-ingress             # Nome do Ingress
   namespace: k8slab                # Namespace
   annotations:                     # ← CONFIGURAÇÕES DO NGINX
-    nginx.ingress.kubernetes.io/rewrite-target: /           # Reescreve URLs
     nginx.ingress.kubernetes.io/cors-allow-origin: "*"      # CORS: qualquer origem
     nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PUT, DELETE, OPTIONS"  # Métodos HTTP
     nginx.ingress.kubernetes.io/cors-allow-headers: "Content-Type, Authorization"      # Headers permitidos
