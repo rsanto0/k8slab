@@ -1,1 +1,7 @@
-"node_modules/target/.angular/dist/*.log.env.DS_Store" 
+node_modules/
+target/
+dist/
+.angular/
+*.log
+.env
+.DS_Store
