@@ -1,51 +1,47 @@
 package com.k8slab.backend.service;
 
-import java.util.*;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.k8slab.backend.model.Task;
+import com.k8slab.backend.repository.TaskRepository;
 
 /**
- * Serviço responsável pela logica de negocios das tarefas
+ * Serviço responsável pela lógica de negócios das tarefas
  */
 @Service
 public class TaskService {
 
-	private final Map<Long, Task> tasks = new HashMap<>();
-	private final AtomicLong counter = new AtomicLong();
+	@Autowired
+	private TaskRepository taskRepository;
 
-	public TaskService() {
+	public List<Task> getAllTasks() {
+		return taskRepository.findAll();
+	}
 
-		createTask(new Task(null, "Aprender Kubernetes", "Estudar Pods, Services e Deployments", false));
-		createTask(new Task(null, "Criar Api REST", "Implementar CRUD de tarefas", true));
+	public Task getTaskById(Long id) {
+		return taskRepository.findById(id).orElse(null);
 	}
 
 	public Task createTask(Task task) {
-		Long id = counter.incrementAndGet();
-		task.setId(id);
-		tasks.put(id, task);
-		return task;
+		return taskRepository.save(task);
 	}
 
 	public Task update(Long id, Task task) {
-		if (tasks.containsKey(id)) {
+		if (taskRepository.existsById(id)) {
 			task.setId(id);
-			tasks.put(id, task);
-			return task;
+			return taskRepository.save(task);
 		}
 		return null;
 	}
 
 	public boolean deleteTask(Long id) {
-		return tasks.remove(id) != null;
-	}
-
-	public List<Task> getAllTasks() {
-		return new ArrayList<>(tasks.values());
-	}
-
-	public Task getTaskById(Long id) {
-		return tasks.get(id);
+		if (taskRepository.existsById(id)) {
+			taskRepository.deleteById(id);
+			return true;
+		}
+		return false;
 	}
 }
