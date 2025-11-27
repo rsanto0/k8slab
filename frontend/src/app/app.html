@@ -1,0 +1,32 @@
+<div class="container">
+  <h1>🚀 K8sLab To-Do List</h1>
+  
+  <div class="task-form">
+    <h3>Nova Tarefa</h3>
+    <input 
+      type="text" 
+      [(ngModel)]="newTask.title" 
+      placeholder="Título da tarefa"
+      class="form-input">
+    <textarea 
+      [(ngModel)]="newTask.description" 
+      placeholder="Descrição"
+      class="form-input"></textarea>
+    <button (click)="createTask()" class="btn-primary">Adicionar Tarefa</button>
+  </div>
+
+  <div class="tasks-list">
+    @for (task of tasks; track task.id) {
+      <div class="task" [class.completed]="task.completed">
+        <h4>{{ task.title }}</h4>
+        <p>{{ task.description }}</p>
+        <button (click)="toggleTask(task)" class="btn-secondary">
+          {{ task.completed ? 'Reabrir' : 'Concluir' }}
+        </button>
+        <button (click)="deleteTask(task.id!)" class="btn-danger">
+          Deletar
+        </button>
+      </div>
+    }
+  </div>
+</div>

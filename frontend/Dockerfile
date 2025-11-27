@@ -1,0 +1,17 @@
+# Build stage
+FROM node:20-alpine AS build
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+RUN find /app/dist -type f -name "*.html" -o -name "*.js" -o -name "*.css"
+
+# Serve stage
+FROM nginx:alpine
+RUN rm -rf /usr/share/nginx/html/*
+COPY --from=build /app/dist/frontend/browser/* /usr/share/nginx/html/
+RUN ls -la /usr/share/nginx/html/
+COPY nginx.conf /etc/nginx/nginx.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
