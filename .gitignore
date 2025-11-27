@@ -1,7 +1,40 @@
-node_modules/
+# ================================
+#   BACKEND (Java + Maven)
+# ================================
 target/
-dist/
-.angular/
+*.class
+*.jar
+*.war
+*.ear
+*.iml
+.idea/
 *.log
-.env
+
+# Spring Boot cached files
+.springBeans
+spring.log
+
+# ================================
+#   FRONTEND (Angular)
+# ================================
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+
+# If using npm logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ================================
+#   SISTEMA / AMBIENTE
+# ================================
 .DS_Store
+Thumbs.db
+
+# ================================
+#   CONFIG SENSÍVEL
+# ================================
+*.env
+*.key
+*.pem
